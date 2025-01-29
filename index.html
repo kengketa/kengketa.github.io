@@ -8,8 +8,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@latest/dist/teachablemachine-image.min.js"></script>
     <title>SMART WASTE CLASSIFIER</title>
 </head>
-<body class="flex flex-col items-center justify-center min-h-screen bg-gray-900 text-white cursor-pointer"
-      onclick="init()">
+<body class="flex flex-col items-center justify-center min-h-screen bg-gray-900 text-white cursor-pointer">
 <div class="w-full flex justify-center cursor-pointer">
     <div class="w-20 h-20 rounded-full overflow-hidden">
         <img class="object-cover w-20 h-20" src="logo.jpg">
@@ -23,6 +22,12 @@
         <div id="results-container"></div>
     </div>
 </div>
+
+<!--&lt;!&ndash; Start To Scan Button &ndash;&gt;-->
+<!--<button class="px-6 py-2 bg-pink-500 text-white rounded-lg hover:bg-pink-400 focus:outline-none uppercase font-semibold"-->
+<!--        id="start-button"-->
+<!--        onclick="startScan()">Start To Scan-->
+<!--</button>-->
 
 <script type="text/javascript">
     const URL = "https://teachablemachine.withgoogle.com/models/IhV8k0q4Y/";
@@ -67,22 +72,27 @@
             let barColor = className === "recycle" ? "bg-yellow-500" : "bg-green-500";
             let textColor = className === "recycle" ? "text-yellow-500" : "text-green-500";
             resultsContainer.innerHTML += `
-                    <div class="flex items-center justify-between ${textColor} font-semibold mt-2">
-                        <span>${className}</span>
-                        <span>${probability}%</span>
-                    </div>
-                    <div class="w-full bg-gray-700 rounded-lg h-8">
-                        <div class="h-8 rounded-lg ${barColor}" style="width: ${probability}%;"></div>
-                    </div>
-                `;
+                        <div class="flex items-center justify-between ${textColor} font-semibold mt-2">
+                            <span>${className}</span>
+                            <span>${probability}%</span>
+                        </div>
+                        <div class="w-full bg-gray-700 rounded-lg h-8">
+                            <div class="h-8 rounded-lg ${barColor}" style="width: ${probability}%;"></div>
+                        </div>
+                    `;
         }
-
     }
 
-    setTimeout(() => {
+    // function startScan() {
+    //     // Hide the "Start To Scan" button once clicked
+    //     document.getElementById("start-button").style.display = "none";
+    //     // Call init to start the webcam and model
+    //     init();
+    // }
+    // Trigger init when the page is ready
+    document.addEventListener('DOMContentLoaded', function () {
         init();
-    }, 1000);
+    });
 </script>
-
 </body>
 </html>
