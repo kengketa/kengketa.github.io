@@ -32,10 +32,8 @@
 
 <script type="text/javascript">
     const URL = "https://teachablemachine.withgoogle.com/models/IhV8k0q4Y/";
-
     let model, webcam, maxPredictions;
 
-    // Load the image model and setup the webcam
     async function init() {
         const modelURL = URL + "model.json";
         const metadataURL = URL + "metadata.json";
