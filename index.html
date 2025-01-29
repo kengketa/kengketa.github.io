@@ -8,7 +8,8 @@
     <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@latest/dist/teachablemachine-image.min.js"></script>
     <title>SMART WASTE CLASSIFIER</title>
 </head>
-<body class="flex flex-col items-center justify-center min-h-screen bg-gray-900 text-white cursor-pointer">
+<body class="flex flex-col items-center justify-center min-h-screen bg-gray-900 text-white cursor-pointer"
+      onclick="startScan()">
 <div class="w-full flex justify-center cursor-pointer">
     <div class="w-20 h-20 rounded-full overflow-hidden">
         <img class="object-cover w-20 h-20" src="logo.jpg">
@@ -23,11 +24,11 @@
     </div>
 </div>
 
-<!--&lt;!&ndash; Start To Scan Button &ndash;&gt;-->
-<!--<button class="px-6 py-2 bg-pink-500 text-white rounded-lg hover:bg-pink-400 focus:outline-none uppercase font-semibold"-->
-<!--        id="start-button"-->
-<!--        onclick="startScan()">Start To Scan-->
-<!--</button>-->
+<!-- Start To Scan Button -->
+<button class="px-6 py-2 bg-pink-500 text-white rounded-lg hover:bg-pink-400 focus:outline-none uppercase font-semibold"
+        id="start-button">
+    Start To Scan
+</button>
 
 <script type="text/javascript">
     const URL = "https://teachablemachine.withgoogle.com/models/IhV8k0q4Y/";
@@ -47,7 +48,11 @@
         await webcam.play();
         window.requestAnimationFrame(loop);
 
-        document.getElementById("webcam-container").appendChild(webcam.canvas);
+        var container = document.getElementById("webcam-container");
+        while (container.firstChild) {
+            container.removeChild(container.firstChild);
+        }
+        container.appendChild(webcam.canvas);
     }
 
     async function loop() {
@@ -83,16 +88,10 @@
         }
     }
 
-    // function startScan() {
-    //     // Hide the "Start To Scan" button once clicked
-    //     document.getElementById("start-button").style.display = "none";
-    //     // Call init to start the webcam and model
-    //     init();
-    // }
-    // Trigger init when the page is ready
-    document.addEventListener('DOMContentLoaded', function () {
+    function startScan() {
+        document.getElementById("start-button").style.display = "none";
         init();
-    });
+    }
 </script>
 </body>
 </html>
