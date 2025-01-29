@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@latest/dist/teachablemachine-image.min.js"></script>
+    <title>SMART WASTE CLASSIFIER</title>
+</head>
+<body class="flex flex-col items-center justify-center min-h-screen bg-gray-900 text-white">
+
+<div class="w-full flex justify-center">
+    <div class="w-20 h-20 rounded-full overflow-hidden">
+        <img class="object-cover w-20 h-20" src="logo.jpg">
+    </div>
+
+</div>
+<h1 class="text-3xl font-bold text-pink-500 uppercase">SMART WASTE CLASSIFIER</h1>
+<p class="text-pink-500 uppercase">AI-Powered Waste Sorting System</p>
+
+<div class="rounded-lg overflow-hidden border-4 border-pink-500 shadow-lg" id="webcam-container"></div>
+<div class="mt-4 w-96 uppercase">
+    <div id="results-container"></div>
+</div>
+
+<script type="text/javascript">
+    const URL = "https://teachablemachine.withgoogle.com/models/IhV8k0q4Y/";
+
+    let model, webcam, maxPredictions;
+
+    // Load the image model and setup the webcam
+    async function init() {
+        const modelURL = URL + "model.json";
+        const metadataURL = URL + "metadata.json";
+
+        model = await tmImage.load(modelURL, metadataURL);
+        maxPredictions = model.getTotalClasses();
+        const flip = true;
+        webcam = new tmImage.Webcam(800, 500, flip);
+        await webcam.setup();
+        await webcam.play();
+        window.requestAnimationFrame(loop);
+
+        document.getElementById("webcam-container").appendChild(webcam.canvas);
+    }
+
+    async function loop() {
+        webcam.update();
+        await predict();
+        window.requestAnimationFrame(loop);
+    }
+
+    async function predict() {
+        const prediction = await model.predict(webcam.canvas);
+        const resultsContainer = document.getElementById("results-container");
+        resultsContainer.innerHTML = ""; // Clear previous results
+
+        let highestPrediction = {className: "", probability: 0};
+
+        for (let i = 0; i < maxPredictions; i++) {
+            let probability = (prediction[i].probability * 100).toFixed(0);
+            let className = prediction[i].className;
+            if (probability > highestPrediction.probability) {
+                highestPrediction = {className, probability};
+            }
+            let barColor = className === "recycle" ? "bg-yellow-500" : "bg-green-500";
+            let textColor = className === "recycle" ? "text-yellow-500" : "text-green-500";
+            resultsContainer.innerHTML += `
+                    <div class="flex items-center justify-between ${textColor} font-semibold mt-2">
+                        <span>${className}</span>
+                        <span>${probability}%</span>
+                    </div>
+                    <div class="w-full bg-gray-700 rounded-lg h-10">
+                        <div class="h-10 rounded-lg ${barColor}" style="width: ${probability}%;"></div>
+                    </div>
+                `;
+        }
+
+    }
+
+    window.onload = init;
+</script>
+
+</body>
+</html>
