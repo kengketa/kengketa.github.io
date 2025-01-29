@@ -18,10 +18,11 @@
 </div>
 <h1 class="text-3xl font-bold text-pink-500 uppercase">SMART WASTE CLASSIFIER</h1>
 <p class="text-pink-500 uppercase">AI-Powered Waste Sorting System</p>
-
-<div class="rounded-lg overflow-hidden border-4 border-pink-500 shadow-lg" id="webcam-container"></div>
-<div class="mt-4 w-96 uppercase">
-    <div id="results-container"></div>
+<div class="w-full flex flex-col items-center mb-8">
+    <div class="rounded-lg overflow-hidden border-4 border-pink-500 shadow-lg" id="webcam-container"></div>
+    <div class="mt-4 w-96 uppercase">
+        <div id="results-container"></div>
+    </div>
 </div>
 
 <script type="text/javascript">
@@ -36,8 +37,8 @@
 
         model = await tmImage.load(modelURL, metadataURL);
         maxPredictions = model.getTotalClasses();
-        const flip = true;
-        webcam = new tmImage.Webcam(800, 500, flip);
+        const flip = false;
+        webcam = new tmImage.Webcam(400, 400, flip);
         await webcam.setup({facingMode: "environment"});
         await webcam.play();
         window.requestAnimationFrame(loop);
@@ -71,8 +72,8 @@
                         <span>${className}</span>
                         <span>${probability}%</span>
                     </div>
-                    <div class="w-full bg-gray-700 rounded-lg h-10">
-                        <div class="h-10 rounded-lg ${barColor}" style="width: ${probability}%;"></div>
+                    <div class="w-full bg-gray-700 rounded-lg h-8">
+                        <div class="h-8 rounded-lg ${barColor}" style="width: ${probability}%;"></div>
                     </div>
                 `;
         }
